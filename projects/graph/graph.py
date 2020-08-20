@@ -68,20 +68,28 @@ class Graph:
         beginning from starting_vertex.
         """
         # Create an empty stack and add the starting_vertex 
-        # stack = Stack()
+        stack = Stack()
+        stack.push(starting_vertex)
         # Create an empty set to track visited verticies
-
+        visited = set()
         # while the stack is not empty:
+        while stack.size() > 0:
             # get current vertex (pop from stack)
-
+            current_vertex = stack.pop()
             # Check if the current vertex has not been visited:
+            if current_vertex not in visited:
                 # print the current vertex
+                print(f"{current_vertex}")
                 # Mark the current vertex as visited
-                    # Add the current vertex to a visited_set
+                # Add the current vertex to a visited_set
+                visited.add(current_vertex)
 
+                # push up all the current vertex's neighbors (so we can visit them next)
+                neighbors = self.get_neighbors(current_vertex)
 
-                # push up all the current vertex's neighbors (so we can visit them next
-        pass  # TODO
+                for neighbor in neighbors:
+                    if neighbor not in visited:
+                        stack.push(neighbor)
 
     def dft_recursive(self, starting_vertex):
         """
