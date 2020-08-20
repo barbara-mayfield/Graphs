@@ -2,6 +2,7 @@
 Simple graph implementation
 """
 from util import Stack, Queue  # These may come in handy
+import collections
 
 class Graph:
 
@@ -184,7 +185,7 @@ class Graph:
                     visited.add(neighbor)
                     return list(visited)
 
-    def dfs_recursive(self, starting_vertex, destination_vertex):
+    def dfs_recursive(self, starting_vertex, destination_vertex, visited=None, path=None):
         """
         Return a list containing a path from
         starting_vertex to destination_vertex in
@@ -192,7 +193,39 @@ class Graph:
 
         This should be done using recursion.
         """
-        pass  # TODO
+
+        # If there are no visited vertices
+        if visited is None:
+            # Create an empty set
+            visited = set()
+            # Our path will be set to a deque list
+            path = collections.deque([])
+            # Add the starting vert to the path
+            path.append([starting_vertex])
+
+        # Mark vertices as visited and add to the set
+        visited.add(starting_vertex)
+        # Remove the current vertices from the path
+        current_vertices = path.pop()
+        # Track the last vertices
+        last_vertices = current_vertices[-1]
+
+        neighbors = self.get_neighbors(last_vertices)
+
+        # For each last vertices in neighbors
+        for last_vertices in neighbors:
+            # If it isn't visited
+            if last_vertices not in visited:
+                # Create a new list to keep track of our route
+                route = list(current_vertices)
+                # Add the last vertices to the route
+                route.append(last_vertices)
+                # Add the route to the path
+                path.append(route)
+
+                if last_vertices is destination_vertex:
+                    return route 
+        return self.dfs_recursive(last_vertices, destination_vertex, visited, path)
 
 if __name__ == '__main__':
     graph = Graph()  # Instantiate your graph
