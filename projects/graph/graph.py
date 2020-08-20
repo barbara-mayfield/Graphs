@@ -42,19 +42,25 @@ class Graph:
         queue.enqueue(starting_vertex)
 
         # Create an empty set to track visited vertices
-        new_S = ()
+        visited = set()
 
         # While the queue is not empty:
-        while queue.size != 0:
+        while queue.size() > 0:
             # Get current vertex (dequeue from queue)
-            vertex_id = queue.dequeue()
+            current_vertex = queue.dequeue()
             # Check if the current vertex has not been visited:
+            if current_vertex not in visited:
                 # Print the current vert
+                print(f"{current_vertex}")
                 # Mark the current vert as visited
-                    # Add the current vertex to a visited_set
-
+                # Add the current vertex to a visited_set
+                visited.add(current_vertex)
+                neighbors = self.get_neighbors(current_vertex)
             # Queue up all the current vertex's neighbors (so we can visit them next)
-        pass # TODO
+                for neighbor in neighbors:
+                    if neighbor not in visited:
+                        queue.enqueue(neighbor)
+                    
 
     def dft(self, starting_vertex):
         """
@@ -62,6 +68,7 @@ class Graph:
         beginning from starting_vertex.
         """
         # Create an empty stack and add the starting_vertex 
+        # stack = Stack()
         # Create an empty set to track visited verticies
 
         # while the stack is not empty:
