@@ -1,6 +1,7 @@
 from room import Room
 from player import Player
 from world import World
+from util import Queue, Stack
 
 import random
 from ast import literal_eval
@@ -25,13 +26,47 @@ world.print_rooms()
 
 player = Player(world.starting_room)
 
+""" 
+Useful Commands: 
+`player.current_room.id`
+`player.current.room.get_exits()`
+`player.travel(direction)`
+"""
+
 # Fill this out with directions to walk
-# traversal_path = ['n', 'n']
 traversal_path = []
 
+# These will handle backward traversal 
+opposite_direction = { 's': 'n', 'n': 's', 'e': 'w', 'w': 'e' }
+reverse_path = [None]
+
+# Visited dict to store our visited rooms
+visited = {}
 
 
-# TRAVERSAL TEST
+# while we haven't searched through all rooms
+while len(visited) < len(room_graph) - 1:
+
+    # if the current room ID has not been visited yet
+    if player.current_room.id not in visited:
+        # set the current ID to visited and get exits 
+        visited[player.current_room.id] = player.current_room.get_exits()
+
+    # while the length of the visited current room's ID == 0
+    while len(visited[player.current_room.id]) == 0:
+        # set previous path to the reverse path list and pop it
+        previous_path = reverse_path.pop()
+        # append the previous path to the traversal_path list
+        traversal_path.append(previous_path)
+        # move to the previous path
+        player.travel(previous_path)
+    
+    next_direction = visited[player.current_room.id].pop()
+    traversal_path.append(next_direction)
+    reverse_path.append(opposite_direction[next_direction])
+    player.travel(next_direction)
+
+# # TRAVERSAL TEST
 visited_rooms = set()
 player.current_room = world.starting_room
 visited_rooms.add(player.current_room)
